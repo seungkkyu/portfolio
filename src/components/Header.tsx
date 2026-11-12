@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { CloseIcon, MenuIcon } from "./icons";
 
 const NAV = [
-  { href: "#about", label: "About" },
-  { href: "#capabilities", label: "Capabilities" },
-  { href: "#work", label: "Work" },
-  { href: "#foundation", label: "Foundation" },
-  { href: "#contact", label: "Contact" },
+  { href: "#about", label: "소개" },
+  { href: "#capabilities", label: "역량" },
+  { href: "#work", label: "작업" },
+  { href: "#foundation", label: "기반 경험" },
+  { href: "#contact", label: "연락처" },
 ];
 
 export default function Header() {
@@ -27,17 +27,17 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur supports-[backdrop-filter]:bg-bg/70">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
-        <a href="#top" className="text-sm font-bold tracking-tight">
-          SeungKyu Park
+    <header className="sticky top-0 z-40 border-b border-ink-line bg-ink text-ink-text [--focus:var(--ink-accent)]">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+        <a href="#top" className="text-[15px] font-bold tracking-tight">
+          박승규
         </a>
 
         <nav aria-label="주요 메뉴" className="hidden md:block">
-          <ul className="flex gap-6 text-sm text-muted">
+          <ul className="flex gap-7 text-sm text-ink-muted">
             {NAV.map((item) => (
               <li key={item.href}>
-                <a href={item.href} className="transition-colors hover:text-text">
+                <a href={item.href} className="transition-colors hover:text-ink-text">
                   {item.label}
                 </a>
               </li>
@@ -47,7 +47,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted hover:text-text md:hidden"
+          className="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-lg text-ink-muted hover:text-ink-text md:hidden"
           aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -58,14 +58,14 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav id="mobile-nav" aria-label="주요 메뉴" className="border-t border-line md:hidden">
-          <ul className="mx-auto max-w-5xl px-4 py-2">
+        <nav id="mobile-nav" aria-label="주요 메뉴" className="border-t border-ink-line md:hidden">
+          <ul className="mx-auto max-w-6xl px-4 py-2">
             {NAV.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-11 items-center text-base text-muted hover:text-text"
+                  className="flex min-h-11 items-center text-base text-ink-muted hover:text-ink-text"
                 >
                   {item.label}
                 </a>

@@ -1,11 +1,29 @@
 // 문구 원본: career/portfolio/web-content.md
 // 공개용 정보만 둔다. 전화번호, 생년월일, 지원 이력은 넣지 않는다.
 
+import type { StaticImageData } from "next/image";
+import aiTextbookChatbot from "@/assets/works/ai-textbook-chatbot.png";
+import aiTextbookDashboard from "@/assets/works/ai-textbook-dashboard.png";
+import chatbotPoc from "@/assets/works/chatbot-poc.png";
+import dreamssam from "@/assets/works/dreamssam.png";
+import elementaryRecord from "@/assets/works/elementary-record.png";
+import kinderboard from "@/assets/works/kinderboard.png";
+import littleHomerun from "@/assets/works/little-homerun.png";
+import middleSchoolRecord from "@/assets/works/middle-school-record.png";
+import myTreeForest from "@/assets/works/my-tree-forest.png";
+
+export type Shot = {
+  src: StaticImageData;
+  alt: string;
+};
+
 export type Career = {
   period: string;
   company: string;
   team: string;
   summary: string;
+  // 공식 로고 SVG/PNG를 src/assets/logos/에 넣고 import해서 연결한다. 없으면 회사명만 표시.
+  logo?: StaticImageData;
 };
 
 export type Capability = {
@@ -24,6 +42,7 @@ export type Work = {
   problems: string[];
   approaches: string[];
   results: string[];
+  shots: Shot[];
   diagram?: "voice-loop" | "chunk-upload";
 };
 
@@ -32,6 +51,7 @@ export type OtherWork = {
   period: string;
   description: string;
   stack: string[];
+  shot: Shot;
 };
 
 export const profile = {
@@ -41,7 +61,11 @@ export const profile = {
   headline: "제품의 맥락까지 이해하는 프론트엔드 개발자입니다.",
   intro:
     "교육 서비스에서 AI 음성 대화, 학습 데이터 대시보드, 교사용 업무 도구를 만들어 왔습니다.",
-  keywords: ["Web Services", "AI Interaction", "Data Visualization"],
+  focus: [
+    { title: "Web Services", description: "반응형 UI와 서비스 개발" },
+    { title: "AI Interaction", description: "음성, LLM, 캐릭터 인터랙션" },
+    { title: "Data Visualization", description: "대시보드, 차트, 리포트" },
+  ],
   email: "effortsk@naver.com",
   github: "https://github.com/seungkkyu",
   closing:
@@ -143,6 +167,12 @@ export const works: Work[] = [
       "반복 호출을 줄이고, 데이터 변경 후에도 화면의 기록이 일관되게 표시되도록 했습니다.",
       "기관 정책, 문서 편집, AI 활용, 관찰기록 확인이 하나의 업무 흐름으로 이어지도록 했습니다.",
     ],
+    shots: [
+      {
+        src: kinderboard,
+        alt: "킨더보드 홈의 AI 비서 입력창, AI 갤러리, AI 기능 메뉴, 우리반 원아 관리 화면",
+      },
+    ],
   },
   {
     slug: "little-homerun",
@@ -164,6 +194,12 @@ export const works: Work[] = [
     ],
     results: [
       "학생별 학습 패턴 조회, 상세 리포트 확인, 상담 이력 관리를 한 인터페이스에서 지원했습니다.",
+    ],
+    shots: [
+      {
+        src: littleHomerun,
+        alt: "리틀홈런 AI생활기록부의 주간 대시보드와 월간 출석, 주간 수행 현황 차트",
+      },
     ],
   },
   {
@@ -197,6 +233,12 @@ export const works: Work[] = [
       "음성 입력부터 캐릭터 반응까지 이어지는 실시간 상담 UI를 구현하고, 상담 이력과 예약 기능을 연결했습니다.",
       "재접속 시 캐싱된 리소스를 사용해 반복 다운로드 없이 진입하도록 했습니다.",
     ],
+    shots: [
+      {
+        src: dreamssam,
+        alt: "AI 드림쌤 상담 메인, Unity WebGL 캐릭터와의 음성 상담, 지난 이야기, 이야기 노트 화면",
+      },
+    ],
     diagram: "voice-loop",
   },
   {
@@ -224,6 +266,12 @@ export const works: Work[] = [
     ],
     results: [
       "학생별 학습 패턴을 확인하고 맞춤형 학습으로 이어지는 데이터 중심 인터페이스를 만들었습니다.",
+    ],
+    shots: [
+      {
+        src: middleSchoolRecord,
+        alt: "중등 AI생활기록부의 학습 분석 대시보드, 과목별 화면, 학습 태도, 오답노트 리포트",
+      },
     ],
   },
   {
@@ -259,6 +307,16 @@ export const works: Work[] = [
       "녹음 종료 시점에 이미 대부분의 데이터가 전달돼, 녹음 직후 응답 처리를 시작하도록 했습니다.",
       "학습 현황 확인, 음성 질의응답, 리포트 저장과 공유가 이어지는 교사용 업무 도구를 만들었습니다.",
     ],
+    shots: [
+      {
+        src: aiTextbookDashboard,
+        alt: "AI 디지털교과서 교사용 대시보드의 수업 달력, 학습 수준별 학생 분포, 개념 맵",
+      },
+      {
+        src: aiTextbookChatbot,
+        alt: "AI 디지털교과서 챗봇의 학습 이력 질의응답 화면",
+      },
+    ],
     diagram: "chunk-upload",
   },
 ];
@@ -270,6 +328,7 @@ export const otherWorks: OtherWork[] = [
     description:
       "홈런 학습기에서 GPT 기반 학습 가이드 챗봇을 검증한 PoC입니다. 여기서 만든 채팅 UI 구조를 교사용 챗봇과 드림쌤 음성 상담으로 확장했습니다.",
     stack: ["Next.js Pages Router", "React", "TypeScript", "React Query"],
+    shot: { src: chatbotPoc, alt: "홈런 챗봇 체험의 과목별 대화 목록과 채팅 화면" },
   },
   {
     title: "내 나무 숲",
@@ -277,6 +336,7 @@ export const otherWorks: OtherWork[] = [
     description:
       "독서, 학습 미션과 보상을 연결하고 활동에 따라 나무가 자라는 서비스입니다. Redux-Saga로 비동기 흐름을 관리하고, Lottie 보상 애니메이션과 WebView 앱 연동을 구현했습니다.",
     stack: ["React", "Redux", "Redux-Saga", "Swiper", "Lottie"],
+    shot: { src: myTreeForest, alt: "내 나무 숲의 나무 성장 화면과 독서 미션, 보상 화면" },
   },
   {
     title: "AI 생활기록부 (초등)",
@@ -284,6 +344,7 @@ export const otherWorks: OtherWork[] = [
     description:
       "Vue로 만든 학습 분석 화면과 React로 만든 학습 유형, 상장 화면을 통합 대시보드 안에서 iframe으로 연동했습니다. 구형 Chromium WebView에 맞춰 Webpack 빌드 설정과 폴리필을 조정했습니다.",
     stack: ["Vue", "Vuex", "React", "Redux-Saga", "Chart.js"],
+    shot: { src: elementaryRecord, alt: "초등 AI 생활기록부의 학습 분석 대시보드와 차트" },
   },
 ];
 

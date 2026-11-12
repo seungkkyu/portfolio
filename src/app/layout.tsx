@@ -1,13 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+// 한글 글리프를 unicode-range 단위로 쪼갠 subset이라, 페이지에 쓰인 글자 묶음만 내려받는다.
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
-
-const notoSansKr = Noto_Sans_KR({
-  variable: "--font-noto-sans-kr",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "박승규 | Frontend Developer",
@@ -25,14 +19,14 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0c0a09" },
+    { media: "(prefers-color-scheme: light)", color: "#0e1428" },
+    { media: "(prefers-color-scheme: dark)", color: "#111830" },
   ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ko" className={`${notoSansKr.variable} antialiased`}>
+    <html lang="ko" className="antialiased">
       <body className="min-h-dvh font-sans">{children}</body>
     </html>
   );

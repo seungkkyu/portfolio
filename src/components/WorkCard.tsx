@@ -1,27 +1,18 @@
-import type { ComponentType, SVGProps } from "react";
-import type { Work } from "@/data/profile";
+import Image from "next/image";
+import type { Shot, Work } from "@/data/profile";
 import { ChunkUploadDiagram, VoiceLoopDiagram } from "./Diagrams";
-import { CheckCircleIcon, TargetIcon, WrenchIcon } from "./icons";
 import { Tags } from "./Section";
 
-function Block({
-  icon: Icon,
-  title,
-  items,
-}: {
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
-  title: string;
-  items: string[];
-}) {
+export const bullet =
+  "relative pl-3.5 before:absolute before:left-0 before:top-[0.7em] before:h-1 before:w-1 before:rounded-full before:bg-subtle";
+
+function Block({ title, items }: { title: string; items: string[] }) {
   return (
-    <div>
-      <h4 className="flex items-center gap-2 text-sm font-semibold">
-        <Icon className="h-4 w-4 text-accent" width={16} height={16} />
-        {title}
-      </h4>
-      <ul className="mt-2.5 space-y-2 text-[15px] leading-relaxed text-muted">
+    <div className="border-t border-line pt-4">
+      <h4 className="text-sm font-semibold">{title}</h4>
+      <ul className="mt-3 space-y-2.5 text-[15px] leading-relaxed text-muted">
         {items.map((item) => (
-          <li key={item} className="relative pl-3.5 before:absolute before:left-0 before:top-[0.7em] before:h-1 before:w-1 before:rounded-full before:bg-subtle">
+          <li key={item} className={bullet}>
             {item}
           </li>
         ))}
@@ -30,36 +21,54 @@ function Block({
   );
 }
 
-export default function WorkCard({ work, index }: { work: Work; index: number }) {
+// 원본 해상도가 가로 1000px 안팎이라 본문 폭(최대 약 900px) 이상으로 키우지 않는다.
+// 여러 장이면 각 이미지의 flex-grow를 가로세로 비율로 줘서 높이를 맞춘다.
+function Shots({ shots }: { shots: Shot[] }) {
   return (
-    <article
-      id={work.slug}
-      className="rounded-2xl border border-line bg-surface p-5 sm:p-8"
-      aria-labelledby={`${work.slug}-title`}
-    >
-      <div className="flex flex-col gap-1 text-xs text-subtle sm:flex-row sm:items-center sm:gap-3">
-        <span className="font-mono text-accent">{String(index + 1).padStart(2, "0")}</span>
-        <span>{work.period}</span>
-        <span className="hidden sm:inline" aria-hidden="true">
-          |
-        </span>
+    <div className="flex flex-col gap-3 rounded-2xl bg-accent-soft p-3 sm:flex-row sm:p-5">
+      {shots.map(({ src, alt }) => (
+        <div key={src.src} className="min-w-0" style={{ flex: `${src.width / src.height} 1 0%` }}>
+          <Image
+            src={src}
+            alt={alt}
+            placeholder="blur"
+            sizes="(min-width: 1024px) 900px, 100vw"
+            className="h-auto w-full rounded-lg"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function WorkCard({ work }: { work: Work }) {
+  return (
+    <article id={work.slug} aria-labelledby={`${work.slug}-title`}>
+      <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-subtle">
+        <span className="tabular-nums">{work.period}</span>
         <span>
           {work.company}, {work.role}
         </span>
-      </div>
-
-      <h3 id={`${work.slug}-title`} className="mt-3 text-xl font-bold tracking-tight sm:text-2xl">
+      </p>
+      <h3
+        id={`${work.slug}-title`}
+        className="mt-2 text-2xl font-bold tracking-[-0.025em] sm:text-[1.75rem]"
+      >
         {work.title}
       </h3>
-      <p className="mt-2 leading-relaxed text-muted">{work.summary}</p>
-      <div className="mt-4">
+      <p className="mt-3 max-w-2xl leading-relaxed text-muted">{work.summary}</p>
+      <div className="mt-5">
         <Tags items={work.stack} />
       </div>
 
-      <div className="mt-8 grid gap-7 lg:grid-cols-3 lg:gap-8">
-        <Block icon={TargetIcon} title="맡은 문제" items={work.problems} />
-        <Block icon={WrenchIcon} title="푼 방식" items={work.approaches} />
-        <Block icon={CheckCircleIcon} title="결과" items={work.results} />
+      <div className="mt-8">
+        <Shots shots={work.shots} />
+      </div>
+
+      <div className="mt-10 grid gap-8 lg:grid-cols-3">
+        <Block title="맡은 문제" items={work.problems} />
+        <Block title="푼 방식" items={work.approaches} />
+        <Block title="결과" items={work.results} />
       </div>
 
       {work.diagram && (
